@@ -8,8 +8,30 @@
 import SwiftUI
 
 struct TopBarView: View {
+    @State var width = UIScreen.main.bounds.width
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            HStack {
+                Button(action: {}) {
+                    Image(systemName: "line.3.horizontal")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 25, height: 20)
+                        .clipped()
+                       // .font(.system(size: 42))
+                        .foregroundColor(Color("bg"))
+                        
+                }
+                Spacer(minLength: 0)
+                Image("logo")
+                Spacer()
+            }.padding()
+            Rectangle()
+                .frame(width: width, height: 1)
+                .foregroundStyle(.gray)
+                .opacity(0.3)
+        }
+        .background(Color.white)
     }
 }
 
