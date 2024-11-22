@@ -74,7 +74,7 @@ struct WelcomeView: View {
                             .opacity(0.3)
                             .frame(width: (getRect().width)*0.35, height: 1)
                     }
-                    Button(action: {}, label: {
+                    NavigationLink(destination: RegisterView().navigationBarHidden(true)) {
                         RoundedRectangle(cornerRadius: 36)
                             .foregroundColor(Color(red: 29/255, green: 161/255, blue: 242/255))
                             .frame(width: 320, height: 60, alignment: .center)
@@ -84,8 +84,8 @@ struct WelcomeView: View {
                                     .font(.title3)
                                     .foregroundStyle(.white)
                                     .padding()
-                            }
-                    }).padding(.bottom)
+                            }.padding(.bottom)
+                    }
                     VStack (alignment: .leading) {
                         VStack {
                             Text("By signup you agree to our ")
@@ -104,9 +104,11 @@ struct WelcomeView: View {
                             Text("and Cookie Use.")
                         }
                         .padding(.bottom)
-                        HStack() {
+                        HStack(spacing: 2) {
                             Text("Have an account already? ")
-                            + Text("Sign in").foregroundStyle(.blue)
+                            NavigationLink(destination: LoginView().navigationBarHidden(true)) {
+                                Text("Sign in").foregroundStyle(.blue)
+                            }
                         }.padding(.bottom)
                     }
                 }

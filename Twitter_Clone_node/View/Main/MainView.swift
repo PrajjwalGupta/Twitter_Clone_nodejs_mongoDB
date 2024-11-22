@@ -18,7 +18,10 @@ struct MainView: View {
                     VStack {
                         TopBarView(x: $x)
                         Home()
-                    }.opacity(x == 0 ? 0.5 : 1)
+                            
+                    }
+                    .offset(x: x + width)
+                    .opacity(x == 0 ? 0.5 : 1)
                     SideMenu()
                         .shadow(color: Color.black.opacity(x != 0 ? 0 : 0.2), radius: 5.0, x: 5, y: 0)
                         .offset(x: x)
