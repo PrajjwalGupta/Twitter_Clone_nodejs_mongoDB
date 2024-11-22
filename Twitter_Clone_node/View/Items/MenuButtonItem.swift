@@ -8,11 +8,31 @@
 import SwiftUI
 
 struct MenuButtonItem: View {
+    var text: String
+    var icon: String
+    
+   // var menuItems = [("Profile","person"), ("Lists", "list.bullet"), ("Topics","widget.small"), ("Bookmarks", "bookmark"), ("Moments","light.recessed.3")]
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(spacing: 25) {
+           // ForEach (menuItems, id: \.0) { item in
+                HStack {
+                    Image(systemName: icon)
+                        .resizable()
+                        .renderingMode(.template)
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(.gray)
+                    
+                    Text(text)
+                        .foregroundColor(.black)
+                        Spacer(minLength: 0)
+                }
+                
+           // }
+        }
+        .padding(.vertical, 12)
     }
 }
 
 #Preview {
-    MenuButtonItem()
+    MenuButtonItem(text: "Profile", icon: "person")
 }

@@ -45,7 +45,7 @@ struct TweetCellView: View {
                         .foregroundStyle(.gray)
                 }
                 Button(action: {}) {
-                    Image(systemName: "arrow.trianglehead.rectanglepath")
+                    Image(systemName: "arrow.2.squarepath")
                         .frame(width: 10, height: 12)
                         .foregroundStyle(.gray)
                 }
