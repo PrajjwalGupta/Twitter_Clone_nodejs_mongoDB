@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct TopBarView: View {
+    @Binding var x: CGFloat
     @State var width = UIScreen.main.bounds.width
     var body: some View {
         VStack {
             HStack {
-                Button(action: {}) {
+                Button(action: { withAnimation { x = 0 } }) {
                     Image(systemName: "line.3.horizontal")
                         .resizable()
                         .scaledToFill()
@@ -25,7 +26,8 @@ struct TopBarView: View {
                 Spacer(minLength: 0)
                 Image("logo")
                 Spacer()
-            }.padding()
+            }.padding(.leading)
+                .padding(.bottom, 1)
             Rectangle()
                 .frame(width: width, height: 1)
                 .foregroundStyle(.gray)
@@ -35,6 +37,6 @@ struct TopBarView: View {
     }
 }
 
-#Preview {
-    TopBarView()
-}
+//#Preview {
+//    TopBarView(x: )
+//}

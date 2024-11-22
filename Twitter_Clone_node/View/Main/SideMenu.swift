@@ -110,7 +110,8 @@ struct SideMenu: View {
             }//HStack
             .padding(.horizontal, 20)
             .padding(.top, edges!.top == 0 ? 15 : edges?.top)
-            .padding(.bottom, edges!.bottom == 0 ? 15 : edges?.bottom)
+            .padding(.bottom)
+           // .padding(.bottom, edges!.bottom == 0 ? 15 : edges?.bottom)
             .frame(width: width - 90)
             .background(.white)
             .ignoresSafeArea(.all, edges: .vertical)
