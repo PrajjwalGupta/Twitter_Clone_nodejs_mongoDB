@@ -8,8 +8,17 @@
 import SwiftUI
 
 struct MessagesView: View {
+    @State var text = ""
+    @State var isEditing = false
     var body: some View {
-        Text("Messages View")
+        VStack {
+            SearchBarView(searchText: $text, isEditing: $isEditing)
+            ScrollView {
+                ForEach(0..<9) { _ in
+                    MessageCellView()
+                }
+            }
+        }
     }
 }
 
