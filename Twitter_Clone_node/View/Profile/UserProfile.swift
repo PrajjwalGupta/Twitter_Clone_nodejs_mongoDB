@@ -25,7 +25,7 @@ struct UserProfile: View {
                             Image("banner")
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
-                                .frame(width: UIScreen.main.bounds.width, height: minY > 0 ? 0 : 180 + minY, alignment: .top)
+                                .frame(width: UIScreen.main.bounds.width, height: minY > 0 ? 180 + minY : 180 , alignment: .top)
                                 .cornerRadius(0)
                             BlurView()
                                 .opacity(blurViewOpacity())
