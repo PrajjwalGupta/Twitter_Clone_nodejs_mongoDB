@@ -28,7 +28,7 @@ struct UserProfile: View {
                             Image("banner")
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
-                                .frame(width: UIScreen.main.bounds.width, height: minY > 0 ? 180 + minY : 180 , alignment: .top)
+                                .frame(width: getRect().width, height: minY > 0 ? 180 + minY : 180 , alignment: .top)
                                 .cornerRadius(0)
                             BlurView()
                                 .opacity(blurViewOpacity())
@@ -120,9 +120,19 @@ struct UserProfile: View {
                                 return Color.clear
                             }.frame(width: 0, height: 0), alignment: .top
                         ).zIndex(1)
-                }
+                    VStack(spacing: 18) {
+                        TweetCellView(tweet: "Hey, Check out my pics from OTTY!", tweetImage: "post")
+                        ForEach(0..<20, id: \.self) { _ in
+                            TweetCellView(tweet: sampleText1)
+                            Divider()
+                            
+                        }
+                    }.padding(.top)
+                        .zIndex(0)
+                }.padding(.horizontal)
+                    .zIndex(-offset > 80 ? 0 : 1)
             }
-        }
+        }.ignoresSafeArea(.all, edges: .top)
     }
     func blurViewOpacity() -> Double {
         let progress = -(offset + 80) / 150

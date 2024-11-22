@@ -46,7 +46,7 @@ struct Home: View {
                                     .foregroundColor(Color(.gray))
                             }
                         } .tag(1)
-                    CommunityView()
+                    UserProfile()
                         .onTapGesture {
                             self.selectedIndex = 2
                         }
