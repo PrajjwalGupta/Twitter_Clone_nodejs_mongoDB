@@ -12,14 +12,14 @@ struct LoginView: View {
     @State var password = ""
     @State var emailDone = false
     @Environment(\.presentationMode) var presentationMode
-    @StateObject var viewModel = AuthViewModel()
+    @EnvironmentObject var viewModel: AuthViewModel
     var body: some View {
         if !emailDone {
             VStack {
                 VStack {
                     ZStack {
                         HStack {
-                            Button(action: {presentationMode.wrappedValue.dismiss()}, label: {
+                            Button(action: { presentationMode.wrappedValue.dismiss() }, label: {
                                 Text("Cancel")
                                     .foregroundColor(.blue)
                             })

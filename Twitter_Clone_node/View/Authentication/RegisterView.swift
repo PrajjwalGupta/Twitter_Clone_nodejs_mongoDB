@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct RegisterView: View {
-    @StateObject var viewModel = AuthViewModel()
+    @EnvironmentObject var viewModel: AuthViewModel
     
     @State var name = ""
     @State var email = ""
     @State var password = ""
     
     @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
         VStack {
             ZStack {
