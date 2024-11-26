@@ -13,7 +13,7 @@ struct SecureAuthTextField: View {
     var body: some View {
         VStack {
             ZStack(alignment: .leading, content: {
-                Text(placeholder)
+              
                 if text.isEmpty {
                     Text(placeholder).foregroundColor(.gray)
                 }
