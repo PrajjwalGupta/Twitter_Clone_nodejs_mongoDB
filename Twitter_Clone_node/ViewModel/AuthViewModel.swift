@@ -22,8 +22,8 @@ class AuthViewModel: ObservableObject {
         }
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
-        let task = session.dataTask(with: request) { data, response, error in
-            guard error == nil else {
+        let task = session.dataTask(with: request) { data, res, err in
+            guard err == nil else {
                 return
             }
             guard let data = data else {
