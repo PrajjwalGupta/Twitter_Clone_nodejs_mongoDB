@@ -121,12 +121,12 @@ struct UserProfile: View {
                             }.frame(width: 0, height: 0), alignment: .top
                         ).zIndex(1)
                     VStack(spacing: 18) {
-                        TweetCellView(tweet: "Hey, Check out my pics from OTTY!", tweetImage: "post")
-                        ForEach(0..<20, id: \.self) { _ in
-                            TweetCellView(tweet: sampleText1)
-                            Divider()
-                            
-                        }
+//                        TweetCellView(tweet: "Hey, Check out my pics from OTTY!", tweetImage: "post")
+//                        ForEach(0..<20, id: \.self) { _ in
+//                            TweetCellView(tweet: sampleText1)
+//                            Divider()
+//                            
+//                        }
                     }.padding(.top)
                         .zIndex(0)
                 }.padding(.horizontal)

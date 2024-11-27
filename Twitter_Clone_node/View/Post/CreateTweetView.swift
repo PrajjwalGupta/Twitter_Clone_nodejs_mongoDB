@@ -20,7 +20,7 @@ struct CreateTweetView: View {
     var body: some View {
         VStack {
             HStack {
-                Button(action:{presentationMode.wrappedValue.dismiss()},label: {
+                Button(action:{ presentationMode.wrappedValue.dismiss() },label: {
                     Text("Cancel")
                 }).frame(width: 120, height: 40)
                     .overlay( RoundedRectangle(cornerRadius: 40 / 2).stroke(Color("bg"), lineWidth: 2)).padding()

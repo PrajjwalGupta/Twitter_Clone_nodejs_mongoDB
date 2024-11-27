@@ -14,7 +14,7 @@ struct FeedView: View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(spacing: 10) {
                 ForEach(viewModel.tweets) { tweet in
-                    TweetCellView(tweet: tweet.text)
+                    TweetCellView(viewModel: TweetCellViewModel(tweet: tweet))
                     Divider()
                 }
             }
@@ -25,6 +25,3 @@ struct FeedView: View {
     }
 }
 
-//#Preview {
-//    FeedView()
-//}

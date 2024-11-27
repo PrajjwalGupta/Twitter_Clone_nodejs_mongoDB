@@ -6,11 +6,19 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct TweetCellView: View {
-    var sampleText = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-    var tweet: String
-    var tweetImage: String?
+
+
+    @ObservedObject var viewModel: TweetCellViewModel
+    
+    init(viewModel: TweetCellViewModel) {
+        self.viewModel = viewModel
+    }
+    
+    var imageId: String = ""
+    
     var body: some View {
         VStack {
             HStack(alignment: .top, spacing: 20) {
@@ -20,23 +28,28 @@ struct TweetCellView: View {
                     .frame(width: 55, height: 55)
                     .clipShape(Circle())
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("Prajjwal")
+                    Text("\(self.viewModel.tweet.username)")
                         .fontWeight(.bold) +
-                    Text("@prajjwal1")
+                    Text("@\(self.viewModel.tweet.username)")
                         .font(.subheadline)
                         .foregroundStyle(.gray)
-                    Text(tweet)
+                    Text(self.viewModel.tweet.text)
                         .frame(maxHeight: 100, alignment: .top)
-                    if let image = tweetImage {
-                        GeometryReader { proxy in
-                            Image(image)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: proxy.frame(in: .global).width, height: 250)
-                                .cornerRadius(15)
-                        }.frame(height: 250)
+                    let imageId = viewModel.tweet.id
+                    if imageId == viewModel.tweet.id {
+                        if viewModel.tweet.Image == "true" {
+                            GeometryReader { proxy in
+                                KFImage(URL(string: "http://localhost:3007/tweets/\(imageId)/image"))
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: proxy.frame(in: .global).width, height: 250)
+                                    .cornerRadius(15)
+                                
+                            }.frame(height: 250)
+                        }
                     }
                 }
+                Spacer()
             }// HStack
             HStack(spacing:50, content: {
                 Button(action: {}) {
@@ -64,8 +77,3 @@ struct TweetCellView: View {
     }
 }
 
-#Preview {
-    TweetCellView(tweet: sampleText1)
-}
-
-var sampleText1 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
