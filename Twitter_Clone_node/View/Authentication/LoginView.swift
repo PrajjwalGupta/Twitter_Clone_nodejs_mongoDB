@@ -84,6 +84,7 @@ struct LoginView: View {
                         .padding(.top)
                     
                     SecureAuthTextField(placeholder: "Password", text: $password)
+                        .textContentType(.none)
                 }
                 Spacer(minLength: 0)
                 VStack {
