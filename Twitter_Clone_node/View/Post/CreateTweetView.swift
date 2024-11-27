@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct CreateTweetView: View {
+    @Binding var show: Bool
     @State var text = ""
     @Environment(\.presentationMode) var presentationMode
+    @ObservedObject var viewModel = CreateTweetViewModel()
     var body: some View {
         VStack {
             HStack {
@@ -18,7 +20,13 @@ struct CreateTweetView: View {
                 }).frame(width: 120, height: 40)
                     .overlay( RoundedRectangle(cornerRadius: 40 / 2).stroke(Color("bg"), lineWidth: 2)).padding()
                 Spacer()
-                Button(action:{},label: {
+                Button(action:{
+                    if text != "" {
+                        self.viewModel.uploadPost(text: text)
+                    }
+                    self.show.toggle()
+                    
+                },label: {
                     Text("Tweet")
                 }).frame(width: 120, height: 40)
                    
@@ -42,6 +50,6 @@ struct CreateTweetView: View {
     }
 }
 
-#Preview {
-    CreateTweetView()
-}
+//#Preview {
+//    CreateTweetView()
+//}

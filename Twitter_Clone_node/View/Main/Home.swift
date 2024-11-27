@@ -110,7 +110,7 @@ struct Home: View {
                     .padding(.bottom, 70)
                     .padding(.trailing, 12)
                 }//VStack
-                .sheet(isPresented: $showCreateTweet, content: {CreateTweetView(text: text).presentationDetents([.medium,.large])})
+                .sheet(isPresented: $showCreateTweet, content: {CreateTweetView(show: $showCreateTweet, text: text).presentationDetents([.medium,.large])})
             }
         }
     }
