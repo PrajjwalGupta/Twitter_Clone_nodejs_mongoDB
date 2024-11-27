@@ -12,6 +12,11 @@ struct CreateTweetView: View {
     @State var text = ""
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel = CreateTweetViewModel()
+    @State var imagePickerPresented = false
+    @State var selectedImage: UIImage?
+    @State var postImage: Image?
+    @State var width = UIScreen.main.bounds.width
+    
     var body: some View {
         VStack {
             HStack {
@@ -22,7 +27,7 @@ struct CreateTweetView: View {
                 Spacer()
                 Button(action:{
                     if text != "" {
-                        self.viewModel.uploadPost(text: text)
+                        self.viewModel.uploadPost(text: text, image: selectedImage)
                     }
                     self.show.toggle()
                     
@@ -42,9 +47,42 @@ struct CreateTweetView: View {
                     .padding(.bottom)
                     .padding(.horizontal)
                    
-                    
                 MultiLineTextField(text: $text)
             }.padding()
+            if postImage == nil {
+                Button(action: {
+                    self.imagePickerPresented.toggle()
+                }, label: {
+                    Image(systemName: "paperclip.circle")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 30, height: 30)
+                        .clipped()
+                        .padding(.top)
+                        .foregroundStyle(Color("bg"))
+                }).sheet(isPresented: $imagePickerPresented) {
+                    loadImage()
+                } content: {
+                    ImagePicker(image: $selectedImage)
+                }
+            }
+           else if let image = postImage {
+                VStack {
+                    HStack(alignment: .top) {
+                       image
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: width * 0.9, height: 200)
+                            .cornerRadius(16)
+                            .padding(.horizontal)
+                            
+                            .clipped()
+                            .padding()
+                      
+                    }
+                }
+            }
+            Spacer()
            
         }.padding(.top)
     }
@@ -53,3 +91,10 @@ struct CreateTweetView: View {
 //#Preview {
 //    CreateTweetView()
 //}
+
+extension CreateTweetView {
+    func loadImage() {
+        guard let selectedImage = selectedImage else { return }
+        postImage = Image(uiImage: selectedImage)
+    }
+}
