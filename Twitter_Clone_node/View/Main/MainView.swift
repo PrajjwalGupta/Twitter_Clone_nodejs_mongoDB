@@ -23,7 +23,7 @@ struct MainView: View {
                     }
                     .offset(x: x + width)
                     .opacity(x == 0 ? 0.5 : 1)
-                    SideMenu()
+                    SideMenu(viewModel: AuthViewModel.shared)
                         .shadow(color: Color.black.opacity(x != 0 ? 0 : 0.2), radius: 5.0, x: 5, y: 0)
                         .offset(x: x)
                         .background(Color.black.opacity(x == 1 ? 0.5 : 0))

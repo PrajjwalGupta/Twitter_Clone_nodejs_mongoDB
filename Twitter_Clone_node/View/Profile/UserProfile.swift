@@ -12,7 +12,17 @@ struct UserProfile: View {
     @State var titleOfset: CGFloat = 0
     @State var currentTab = "Tweets"
     @State var tabBarOffset: CGFloat = 0
+    @ObservedObject var viewModel: ProfileViewModel
     @Namespace var animation
+    let user: User
+    @State var editProfile: Bool = false
+    
+    init(user: User) {
+        self.user = user
+        self.viewModel = ProfileViewModel(user: user)
+    }
+    
+    
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 15) {
@@ -33,7 +43,7 @@ struct UserProfile: View {
                             BlurView()
                                 .opacity(blurViewOpacity())
                             VStack(spacing: 5) {
-                                Text("Prajjwal")
+                                Text(self.user.name)
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)
                                 Text("150 Tweets")
@@ -60,20 +70,28 @@ struct UserProfile: View {
                             .offset(y: offset < 0 ? getoffset() - 20 : -20)
                             .scaleEffect(getScale())
                         Spacer()
-                        Button(action:{},label: {
+                        Button(action:{
+                            self.editProfile.toggle()
+                        },label: {
                             Text("Edit Profile")
                         }).frame(width: 120, height: 40)
                             .overlay( RoundedRectangle(cornerRadius: 40 / 2).stroke(Color("bg"), lineWidth: 2)).padding()
+                            .sheet(isPresented: $editProfile) {
+                                
+                            } content: {
+                                EditProfileView(user: $viewModel.user)
+                            }
+
                         
                         
                     }.padding(.top, -25)
                         .padding(.bottom, -10)
                     VStack(alignment: .leading) {
-                        Text("Prajjwal")
+                        Text(self.user.name)
                             .font(.title2)
                             .fontWeight(.bold)
                             .foregroundStyle(.primary)
-                        Text("@Prajjwal1")
+                        Text("@\(self.user.username)")
                             .foregroundStyle(.gray)
                         Text("Lorem Ipsum is simply dummy text of the printing and 4️⃣, 5️⃣typesetting industry.")
                         HStack(spacing: 5) {
@@ -156,6 +174,6 @@ struct UserProfile: View {
     
 }
 
-#Preview {
-    UserProfile()
-}
+//#Preview {
+//    UserProfile()
+//}

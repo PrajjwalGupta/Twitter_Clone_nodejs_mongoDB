@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SideMenu: View {
     @State var showMenu = false
+    @ObservedObject var viewModel: AuthViewModel
     var edges = UIApplication.shared.windows.first?.safeAreaInsets
     @State var width = UIScreen.main.bounds.width
     var menuItems = [("Profile","person"), ("Lists", "list.bullet"), ("Topics","widget.small"), ("Bookmarks", "bookmark"), ("Moments","light.recessed.3")]
@@ -17,18 +18,41 @@ struct SideMenu: View {
         VStack {
             HStack(spacing: 0) {
                 VStack(alignment: .leading) {
-                    Image("me")
-                        .resizable()
-                        .frame(width: 60, height: 60)
-                        .clipShape(Circle())
+                    NavigationLink(destination: UserProfile(user: viewModel.currentUser!).navigationBarHidden(false)) {
+                        Image("me")
+                            .resizable()
+                            .frame(width: 60, height: 60)
+                            .clipShape(Circle())
+                    }.navigationTitle("")
+                        .onAppear {
+                                       // Configure the navigation bar to be transparent
+                                       let appearance = UINavigationBarAppearance()
+                                       appearance.configureWithTransparentBackground()
+                                       appearance.backgroundColor = UIColor.clear // Fully transparent
+                                       
+                                       UINavigationBar.appearance().standardAppearance = appearance
+                                       UINavigationBar.appearance().scrollEdgeAppearance = appearance
+                                   }
                     HStack(alignment: .top, spacing: 12, content: {
                         VStack(alignment: .leading, spacing: 12, content: {
-                            Text("Prajjwal")
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .foregroundStyle(.black)
-                            Text("@Prajjwal1")
-                                .foregroundColor(.gray)
+                            NavigationLink(destination: UserProfile(user: viewModel.currentUser!).navigationBarHidden(false)) {
+                                VStack(alignment: .leading, spacing: 12, content: { Text(viewModel.currentUser!.name)
+                                        .font(.title3)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.black)
+                                    Text("@\(viewModel.currentUser!.username)")
+                                        .foregroundColor(.gray)
+                                })
+                            }.navigationTitle("")
+                                .onAppear {
+                                               // Configure the navigation bar to be transparent
+                                               let appearance = UINavigationBarAppearance()
+                                               appearance.configureWithTransparentBackground()
+                                               appearance.backgroundColor = UIColor.clear // Fully transparent
+                                               
+                                               UINavigationBar.appearance().standardAppearance = appearance
+                                               UINavigationBar.appearance().scrollEdgeAppearance = appearance
+                                           }
                             HStack(spacing: 20) {
                                 FollowView(count: 8, title: "Following")
                                 FollowView(count: 18, title: "Followers")
@@ -121,6 +145,3 @@ struct SideMenu: View {
     }
 }
 
-#Preview {
-    SideMenu()
-}
