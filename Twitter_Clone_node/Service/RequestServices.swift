@@ -99,9 +99,9 @@ public class RequestServices {
                 }
             
             } catch let error {
-                print(error)
+                print(error.localizedDescription)
             }
-                
+                   
         }
         task.resume()
     }
