@@ -13,6 +13,8 @@ struct TweetCellView: View {
 
     @ObservedObject var viewModel: TweetCellViewModel
     
+    var didLike: Bool { return viewModel.tweet.didLike ?? false }
+    
     init(viewModel: TweetCellViewModel) {
         self.viewModel = viewModel
     }
@@ -22,11 +24,22 @@ struct TweetCellView: View {
     var body: some View {
         VStack {
             HStack(alignment: .top, spacing: 20) {
-                Image("me")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 55, height: 55)
-                    .clipShape(Circle())
+                if let user = viewModel.user {
+                    NavigationLink {
+                        UserProfile(user: user)
+                    } label: {
+                        KFImage(URL(string: "http://localhost:3007/users/\(self.viewModel.tweet.userId)/avatar"))
+                            .placeholder({
+                                Image(systemName: "person")
+                                    .resizable()
+                                    .scaledToFit()
+                            })
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 55, height: 55)
+                            .clipShape(Circle())
+                    }
+                }
                 VStack(alignment: .leading, spacing: 10) {
                     Text("\(self.viewModel.tweet.username)")
                         .fontWeight(.bold) +
@@ -62,10 +75,22 @@ struct TweetCellView: View {
                         .frame(width: 10, height: 12)
                         .foregroundStyle(.gray)
                 }
-                Button(action: {}) {
-                    Image(systemName: "heart")
-                        .frame(width: 18, height: 15)
-                        .foregroundStyle(.gray)
+                Button(action: {
+                    if (self.didLike) {
+                        self.viewModel.unlike()
+                    } else {
+                        self.viewModel.like()
+                    }
+                }) {
+                    if(self.didLike == false) {
+                        Image(systemName: "heart")
+                            .frame(width: 18, height: 15)
+                            .foregroundStyle(.gray)
+                    } else {
+                        Image(systemName: "heart.fill")
+                            .frame(width: 18, height: 15)
+                            .foregroundStyle(.red)
+                    }
                 }
                 Button(action: {}) {
                     Image(systemName: "square.and.arrow.up")

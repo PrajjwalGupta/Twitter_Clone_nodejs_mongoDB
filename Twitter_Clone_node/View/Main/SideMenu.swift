@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct SideMenu: View {
     @State var showMenu = false
@@ -19,7 +20,11 @@ struct SideMenu: View {
             HStack(spacing: 0) {
                 VStack(alignment: .leading) {
                     NavigationLink(destination: UserProfile(user: viewModel.currentUser!).navigationBarHidden(false)) {
-                        Image("me")
+                        KFImage(URL(string: "http://localhost:3007/users/\(self.viewModel.currentUser!.id)/avatar"))
+                            .placeholder({
+                                Image(systemName: "person")
+                                    .resizable()
+                            })
                             .resizable()
                             .frame(width: 60, height: 60)
                             .clipShape(Circle())

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct UserProfile: View {
     @State var offset: CGFloat = 0
@@ -13,27 +14,26 @@ struct UserProfile: View {
     @State var currentTab = "Tweets"
     @State var tabBarOffset: CGFloat = 0
     @ObservedObject var viewModel: ProfileViewModel
+    var isFollowed: Bool { return viewModel.user.isFollowed ?? false }
     @Namespace var animation
     let user: User
     @State var editProfile: Bool = false
-    
+    var isCurrentUser: Bool {
+        return viewModel.user.isCurrentUser ?? false
+    }
     init(user: User) {
         self.user = user
         self.viewModel = ProfileViewModel(user: user)
+        print("USER: \(viewModel.user.isCurrentUser)")
     }
-    
-    
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 15) {
                 GeometryReader { proxy in
                     let minY = proxy.frame(in: .global).minY
-                  // DispatchQueue.main.async {
                     Color.clear.onChange(of: minY) { newMinY in
                                                self.offset = newMinY
                           }
-                   // }
-                    //return AnyView(
                         ZStack {
                             Image("banner")
                                 .resizable()
@@ -60,7 +60,14 @@ struct UserProfile: View {
                     .zIndex(1)
                 VStack{
                     HStack {
-                        Image("me")
+                        KFImage(URL(string: "http://localhost:3007/users/\(self.viewModel.user.id)/avatar"))
+                            .placeholder({
+                                Image(systemName: "person.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 75, height: 75)
+                                .clipShape(Circle())   
+                            })
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 75, height: 75)
@@ -70,52 +77,91 @@ struct UserProfile: View {
                             .offset(y: offset < 0 ? getoffset() - 20 : -20)
                             .scaleEffect(getScale())
                         Spacer()
-                        Button(action:{
-                            self.editProfile.toggle()
-                        },label: {
-                            Text("Edit Profile")
-                        }).frame(width: 120, height: 40)
-                            .overlay( RoundedRectangle(cornerRadius: 40 / 2).stroke(Color("bg"), lineWidth: 2)).padding()
-                            .sheet(isPresented: $editProfile) {
-                                
-                            } content: {
-                                EditProfileView(user: $viewModel.user)
-                            }
-
-                        
-                        
+                        if(self.isCurrentUser) {
+                            Button(action:{
+                                self.editProfile.toggle()
+                            },label: {
+                                Text("Edit Profile")
+                            }).frame(width: 120, height: 40)
+                                .overlay( RoundedRectangle(cornerRadius: 40 / 2).stroke(Color("bg"), lineWidth: 2)).padding()
+                                .sheet(isPresented: $editProfile) {
+                                    
+                                } content: {
+                                    EditProfileView(user: $viewModel.user)
+                                }
+                        } else {
+                            Button(action:{
+                                isFollowed ? self.viewModel.unfollow() : self.viewModel.follow()
+                            },label: {
+                                Text(isFollowed ? "Following" : "Follow")
+                                    .foregroundColor(isFollowed ? .blue : .black)
+                            }).frame(width: 120, height: 40)
+                                .overlay( RoundedRectangle(cornerRadius: 40 / 2).stroke(Color("bg"), lineWidth: 2)).padding()
+                        }
                     }.padding(.top, -25)
                         .padding(.bottom, -10)
-                    VStack(alignment: .leading) {
-                        Text(self.user.name)
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundStyle(.primary)
-                        Text("@\(self.user.username)")
-                            .foregroundStyle(.gray)
-                        Text("Lorem Ipsum is simply dummy text of the printing and 4️⃣, 5️⃣typesetting industry.")
-                        HStack(spacing: 5) {
-                            Text("54")
+                    HStack {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(self.viewModel.user.name)
+                                .font(.title2)
+                                .fontWeight(.bold)
                                 .foregroundStyle(.primary)
-                                .fontWeight(.semibold)
-                            Text("Followers")
+                            Text("@\(self.viewModel.user.username)")
                                 .foregroundStyle(.gray)
-                            Text("234")
-                                .foregroundStyle(.primary)
-                                .fontWeight(.semibold)
-                                .padding(.leading, 10)
-                            Text("Following")
-                                .foregroundStyle(.gray)
-                        }.padding()
-                    }.overlay (
-                        GeometryReader { proxy -> Color in
-                            let minY = proxy.frame(in: .global).minY
-                            DispatchQueue.main.async {
-                                self.titleOfset = minY
+                            Text(viewModel.user.bio ?? "Lorem Ipsum is simply dummy text of the printing and 4️⃣, 5️⃣typesetting industry.")
+                            HStack(spacing: 8) {
+                                if let userLocation = viewModel.user.location {
+                                    if (userLocation != "") {
+                                        HStack(spacing: 2) {
+                                            Image(systemName: "location.circle")
+                                                .frame(width: 44, height: 44, alignment: .center)
+                                                .foregroundColor(Color("bg"))
+                                            Text(userLocation)
+                                                .foregroundColor(.gray)
+                                                .font(.system(size: 20))
+                                        }
+                                    }
+                                }
+                                if let userwebsite = viewModel.user.website {
+                                    if (userwebsite != "") {
+                                        HStack(spacing: 2) {
+                                            Image(systemName: "link")
+                                                .frame(width: 24, height: 24, alignment: .center)
+                                                .foregroundColor(Color("bg"))
+                                            Text(userwebsite)
+                                                .foregroundColor(.gray)
+                                                .font(.system(size: 20))
+                                        }.padding(.trailing, 10)
+                                    }
+                                }
+                                Spacer()
                             }
-                            return Color.clear
-                        }.frame(width: 0,height: 0), alignment: .top
-                    )
+                            HStack(spacing: 5) {
+                                Text("54")
+                                    .foregroundStyle(.primary)
+                                    .fontWeight(.semibold)
+                                Text("Followers")
+                                    .foregroundStyle(.gray)
+                                Text("234")
+                                    .foregroundStyle(.primary)
+                                    .fontWeight(.semibold)
+                                    .padding(.leading, 10)
+                                Text("Following")
+                                    .foregroundStyle(.gray)
+                            }.padding()
+                        }
+                        .padding(.leading, 8)
+                        .overlay (
+                            GeometryReader { proxy -> Color in
+                                let minY = proxy.frame(in: .global).minY
+                                DispatchQueue.main.async {
+                                    self.titleOfset = minY
+                                }
+                                return Color.clear
+                            }.frame(width: 0,height: 0), alignment: .top
+                        )
+                        Spacer()
+                    }
                     VStack(spacing: 0) {
                         ScrollView(.horizontal, showsIndicators: true) {
                             HStack(spacing: 0) {
@@ -139,12 +185,9 @@ struct UserProfile: View {
                             }.frame(width: 0, height: 0), alignment: .top
                         ).zIndex(1)
                     VStack(spacing: 18) {
-//                        TweetCellView(tweet: "Hey, Check out my pics from OTTY!", tweetImage: "post")
-//                        ForEach(0..<20, id: \.self) { _ in
-//                            TweetCellView(tweet: sampleText1)
-//                            Divider()
-//                            
-//                        }
+                        ForEach(viewModel.tweets) { tweet in
+                            TweetCellView(viewModel: TweetCellViewModel(tweet: tweet, currentUser: AuthViewModel.shared.currentUser!))
+                        }
                     }.padding(.top)
                         .zIndex(0)
                 }.padding(.horizontal)
@@ -174,6 +217,4 @@ struct UserProfile: View {
     
 }
 
-//#Preview {
-//    UserProfile()
-//}
+
