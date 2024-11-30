@@ -85,12 +85,12 @@ struct SideMenu: View {
                             MenuButtonItem(text: "Twitter Ads", icon: "arrow.up.right.square")
                         })
                         Divider()
-                        Button(action: {}, label: {
+                        Button(action: {  }, label: {
                             Text("Settings and Privacy")
                                 .foregroundColor(.black)
                         }).padding(.top,10)
-                        Button(action: {}, label: {
-                            Text("Help and Centre")
+                        Button(action: { AuthViewModel.shared.logout() }, label: {
+                            Text("Logout")
                                 .foregroundColor(.black)
                         }).padding(.top,10)
                         Spacer()

@@ -16,7 +16,7 @@ class FeedViewModel: ObservableObject {
     
     func fetchTweets() {
         RequestServices.requestDomain = "http://localhost:3007/tweets"
-        RequestServices.fetchTweets { res in
+        RequestServices.fetchData { res in
             switch res {
                 case .success(let data):
                     guard let tweets = try? JSONDecoder().decode([Tweet].self, from: data as! Data) else { return }

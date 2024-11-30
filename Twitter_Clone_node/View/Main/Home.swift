@@ -63,7 +63,7 @@ struct Home: View {
                                     .foregroundColor(Color(.gray))
                             }
                         } .tag(2)
-                    NotificationsView()
+                    NotificationsView(user: user)
                         .onTapGesture {
                             self.selectedIndex = 3
                         }

@@ -20,7 +20,7 @@ struct RegisterView: View {
         VStack {
             ZStack {
                 HStack {
-                    Button(action: {presentationMode.wrappedValue.dismiss()}, label: {
+                    Button(action: { presentationMode.wrappedValue.dismiss() }, label: {
                         Text("Cancel")
                             .foregroundColor(.blue)
                     })

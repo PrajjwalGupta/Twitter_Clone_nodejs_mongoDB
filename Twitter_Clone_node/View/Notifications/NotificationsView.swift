@@ -8,17 +8,24 @@
 import SwiftUI
 
 struct NotificationsView: View {
+    let user: User
+    @ObservedObject var viewModel: notificationViewModel
+    
+    init(user: User) {
+        self.user = user
+        self.viewModel = notificationViewModel(user: user)
+        
+    }
+    
     var body: some View {
         VStack {
             ScrollView {
-                ForEach(0..<9) { _ in
-                    NotificationsCell()
+                ForEach(viewModel.notification) { not in
+                    NotificationsCell(notification: not)
                 }
             }
         }
     }
 }
 
-#Preview {
-    NotificationsView()
-}
+
